@@ -166,7 +166,7 @@ writeFileSync(resolve(docsDir, "theme-tokens.md"), md);
 // shadcn theme mapping — map the design palette onto shadcn/ui CSS variables.
 // Each entry references a palette token by name; resolved per-mode to OKLCH.
 // This is the single source of truth for apps/web/src/styles/globals.css and
-// the registry theme (public/r/mosly.json). Keep them in sync via this script.
+// the registry theme (public/r/theme.json). Keep them in sync via this script.
 // ---------------------------------------------------------------------------
 
 /** Map of shadcn var -> palette token key. Resolved separately for light/dark. */
@@ -241,7 +241,7 @@ css += emitBlock(".dark", darkVars);
 writeFileSync(resolve(docsDir, "theme.css"), css);
 
 // Registry theme JSON (shadcn `registry:theme` item) — importable via
-// `npx shadcn add https://ui.mosly.dev/r/mosly.json`.
+// `npx shadcn add https://ui.mosly.dev/r/theme.json`.
 const registry = {
   $schema: "https://ui.shadcn.com/schema/registry-item.json",
   name: "mosly",
@@ -254,16 +254,16 @@ const registry = {
     dark: darkVars,
   },
 };
-writeFileSync(resolve(docsDir, "mosly.registry.json"), JSON.stringify(registry, null, 2) + "\n");
+writeFileSync(resolve(docsDir, "theme.registry.json"), JSON.stringify(registry, null, 2) + "\n");
 
 // --- App artifacts: written straight into the web app so they stay in sync. ---
 const appDir = resolve(__dirname, "../apps/web");
 
-// public/r/mosly.json — the importable registry theme served at
-// https://ui.mosly.dev/r/mosly.json
+// public/r/theme.json — the importable registry theme served at
+// https://ui.mosly.dev/r/theme.json
 const registryDir = resolve(appDir, "public/r");
 mkdirSync(registryDir, { recursive: true });
-writeFileSync(resolve(registryDir, "mosly.json"), JSON.stringify(registry, null, 2) + "\n");
+writeFileSync(resolve(registryDir, "theme.json"), JSON.stringify(registry, null, 2) + "\n");
 
 // src/styles/globals.css — the live Tailwind v4 + shadcn theme entrypoint.
 const stylesDir = resolve(appDir, "src/styles");
@@ -307,6 +307,6 @@ ${emitBlock(".dark", darkVars)}
 writeFileSync(resolve(stylesDir, "globals.css"), globals);
 
 console.log(
-  `Wrote docs/{palette.oklch.json, theme-tokens.md, theme.css, mosly.registry.json},\n` +
-    `      apps/web/public/r/mosly.json, apps/web/src/styles/globals.css`,
+  `Wrote docs/{palette.oklch.json, theme-tokens.md, theme.css, theme.registry.json},\n` +
+    `      apps/web/public/r/theme.json, apps/web/src/styles/globals.css`,
 );

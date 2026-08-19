@@ -2,7 +2,7 @@
 
 A shadcn theme + component showcase. Every shadcn/ui component rendered in my
 personal design language (a dark, Linear-inspired system), plus a one-command
-importable theme registry: `npx shadcn@latest add https://ui.mosly.dev/r/mosly.json`.
+importable theme registry: `npx shadcn@latest add https://ui.mosly.dev/r/theme.json`.
 
 ## Development
 

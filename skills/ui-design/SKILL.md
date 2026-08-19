@@ -22,7 +22,7 @@ shadcn `registry:theme` so any shadcn project can adopt it in one command.
 The theme is served as a shadcn registry item:
 
 ```sh
-npx shadcn@latest add https://ui.mosly.dev/r/mosly.json
+npx shadcn@latest add https://ui.mosly.dev/r/theme.json
 ```
 
 This writes the OKLCH `:root` / `.dark` CSS variables and `--radius` into the

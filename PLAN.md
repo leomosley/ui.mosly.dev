@@ -14,7 +14,7 @@ re-deriving decisions. Read it fully before starting.
 
 1. **A theme, not a component library.** We ship _theming only_ — no components
    beyond what shadcn already provides. The deliverable theme is importable into
-   any shadcn project via `npx shadcn@latest add https://ui.mosly.dev/r/mosly.json`.
+   any shadcn project via `npx shadcn@latest add https://ui.mosly.dev/r/theme.json`.
 2. **A showcase site** (Astro + React) that:
    - **Home page** — a curated, real-looking UI (dashboard-style composition) that
      demonstrates the theme in context, à la a product screenshot but live.
@@ -43,10 +43,10 @@ Everything below is DONE and committed as the `init` skeleton:
     `ui-design` skill) to **OKLCH** and emits all theme artifacts. No deps.
   - `apps/web/src/styles/globals.css` — live Tailwind v4 + shadcn theme
     (`@theme inline` mapping, `:root` light, `.dark` dark). **Generated.**
-  - `apps/web/public/r/mosly.json` — the importable `registry:theme` item.
-    **Generated.** Served at `https://ui.mosly.dev/r/mosly.json`.
+  - `apps/web/public/r/theme.json` — the importable `registry:theme` item.
+    **Generated.** Served at `https://ui.mosly.dev/r/theme.json`.
   - `docs/theme-tokens.md`, `docs/palette.oklch.json`, `docs/theme.css`,
-    `docs/mosly.registry.json` — human/machine references. **Generated.**
+    `docs/theme.registry.json` — human/machine references. **Generated.**
 - **shadcn config**: `apps/web/components.json` (new-york style, css variables,
   `@/` aliases, lucide icons). `apps/web/src/lib/utils.ts` (`cn`).
 - **Design skill**: `skills/ui-design/SKILL.md` — the Mosly methodology + how to
@@ -55,7 +55,7 @@ Everything below is DONE and committed as the `init` skeleton:
 
 > **Regenerating the theme:** edit the palette in `scripts/convert-palette.ts`,
 > then `bun run scripts/convert-palette.ts`. Never hand-edit `globals.css` or
-> `public/r/mosly.json` — they are overwritten. Wire this into `package.json` as
+> `public/r/theme.json` — they are overwritten. Wire this into `package.json` as
 > a `theme` script and consider a CI check that the artifacts are up to date.
 
 ---
@@ -80,7 +80,7 @@ Everything below is DONE and committed as the `init` skeleton:
 ```
 apps/web/
   public/
-    r/mosly.json            # registry theme (generated)
+    r/theme.json            # registry theme (generated)
     favicon.svg
     og/                     # static OG fallback image(s)
   src/
@@ -197,7 +197,7 @@ composition, built from shadcn primitives inside `src/components/showcase/`:
   `badge` statuses, `tabs`, a `dialog`/`sheet` trigger, `command` palette.
 - A secondary panel showing forms (`input`, `select`, `switch`, `slider`).
 - Hero copy above/around it: display type, one primary CTA, a "Copy install
-  command" button (`npx shadcn add https://ui.mosly.dev/r/mosly.json`).
+  command" button (`npx shadcn add https://ui.mosly.dev/r/theme.json`).
 
 Goal: someone lands, sees a gorgeous dark product UI, and immediately gets the
 theme. Keep chrome minimal; let the UI carry the page.
@@ -280,7 +280,7 @@ theme. Keep chrome minimal; let the UI carry the page.
   `apps/web` OR use a root `vercel.json` / Turbo remote cache. Simplest: point
   Vercel at `apps/web`.
 - Domain: add `ui.mosly.dev` in Vercel and configure DNS (CNAME → Vercel).
-- Confirm `public/r/mosly.json` is served at `/r/mosly.json` (static passthrough).
+- Confirm `public/r/theme.json` is served at `/r/theme.json` (static passthrough).
 - The registry JSON must be reachable + CORS-friendly for the shadcn CLI (static
   files on Vercel are fine).
 
@@ -288,11 +288,11 @@ theme. Keep chrome minimal; let the UI carry the page.
 
 ## 14. Registry / theme distribution
 
-- The theme item is `apps/web/public/r/mosly.json` (generated). It is a
+- The theme item is `apps/web/public/r/theme.json` (generated). It is a
   `registry:theme` with `cssVars.theme.radius`, `cssVars.light`, `cssVars.dark`.
-- Verified install path: `npx shadcn@latest add https://ui.mosly.dev/r/mosly.json`.
+- Verified install path: `npx shadcn@latest add https://ui.mosly.dev/r/theme.json`.
 - If we later add a `registry.json` index (multiple items), use
-  `shadcn build` to emit `public/r/*.json` and keep `mosly.json` as the theme.
+  `shadcn build` to emit `public/r/*.json` and keep `theme.json` as the theme.
   Root script `registry:build` already stubs this.
 - Test the install against a scratch shadcn app before launch (see §16).
 
@@ -316,7 +316,7 @@ theme. Keep chrome minimal; let the UI carry the page.
 - [ ] Home page renders a convincing composed UI in both themes.
 - [ ] OG tags present + absolute; link preview renders on Slack/Twitter/iMessage.
 - [ ] `sitemap` + `robots.txt` correct for ui.mosly.dev.
-- [ ] `npx shadcn add https://ui.mosly.dev/r/mosly.json` applied to a fresh
+- [ ] `npx shadcn add https://ui.mosly.dev/r/theme.json` applied to a fresh
       Tailwind-v4 shadcn app reproduces the exact look.
 - [ ] Lighthouse: performance/SEO/accessibility all strong; no CLS from fonts.
 - [ ] `bun run build` + `bun run typecheck` green in CI.
