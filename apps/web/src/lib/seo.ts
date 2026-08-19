@@ -8,12 +8,12 @@ interface SeoInput {
 }
 
 export function buildSeo({
-  title = "Mosly UI — A restrained shadcn theme",
-  description = "A restrained, Linear-inspired shadcn/ui theme and complete component showcase.",
+  title = "Mosly UI, a shadcn theme worth stealing",
+  description = "A calm, Linear-inspired shadcn/ui theme with every component in one place.",
   path = "/",
   image = "/og/default.png",
 }: SeoInput = {}) {
-  const resolvedTitle = title.includes("Mosly UI") ? title : `${title} — Mosly UI`;
+  const resolvedTitle = title.includes("Mosly UI") ? title : `${title} · Mosly UI`;
 
   return {
     title: resolvedTitle,

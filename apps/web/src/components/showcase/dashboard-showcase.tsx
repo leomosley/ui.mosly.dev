@@ -236,7 +236,7 @@ export function DashboardShowcase() {
               <SparklesIcon className="text-primary size-4" />
             </div>
             <p className="text-muted-foreground text-sm">
-              Here’s what is moving across the workspace.
+              Here's what is moving across the workspace.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

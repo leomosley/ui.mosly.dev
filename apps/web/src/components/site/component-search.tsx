@@ -53,9 +53,6 @@ export function ComponentSearch() {
                   <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
                     {component.description}
                   </p>
-                  <span className="text-muted-foreground mt-auto pt-4 font-mono text-[11px]">
-                    {component.slug}
-                  </span>
                 </a>
               ))}
             </div>
@@ -64,7 +61,7 @@ export function ComponentSearch() {
       })}
       {filtered.length === 0 && (
         <div className="border-border flex min-h-52 items-center justify-center rounded-xl border border-dashed">
-          <p className="text-muted-foreground text-sm">No components match “{query}”.</p>
+          <p className="text-muted-foreground text-sm">No components match "{query}".</p>
         </div>
       )}
     </div>
