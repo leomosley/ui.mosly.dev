@@ -1,0 +1,59 @@
+---
+import { ExternalLinkIcon } from "lucide-react";
+
+import { ComponentDemo } from "@/components/demos/component-demo";
+import { components, type ComponentEntry } from "@/data/components";
+import Base from "@/layouts/Base.astro";
+
+export function getStaticPaths() {
+  return components.map((component) => ({
+    params: { component: component.slug },
+    props: { component },
+  }));
+}
+
+interface Props {
+  component: ComponentEntry;
+}
+const { component } = Astro.props;
+---
+
+<Base
+  title={component.name}
+  description={`${component.description} Preview the ${component.name} component in the Mosly shadcn theme.`}
+>
+  <main class="mx-auto max-w-7xl px-4 pt-14 sm:px-6 sm:pt-20">
+    <a href="/components" class="text-muted-foreground hover:text-foreground font-mono text-xs"
+      >← All components</a
+    >
+    <div
+      class="mt-8 flex flex-col gap-6 border-b pb-10 sm:flex-row sm:items-end sm:justify-between"
+    >
+      <div>
+        <p class="text-primary mb-3 font-mono text-xs uppercase tracking-widest">
+          {component.group}
+        </p>
+        <h1 class="text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">{component.name}</h1>
+        <p class="text-muted-foreground mt-4 text-lg">{component.description}</p>
+      </div>
+      <a
+        href={component.shadcnUrl}
+        target="_blank"
+        rel="noreferrer"
+        class="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm"
+        >Upstream docs <ExternalLinkIcon className="size-4" /></a
+      >
+    </div>
+    <section
+      class="bg-card/30 mt-10 flex min-h-[28rem] items-center justify-center overflow-hidden rounded-xl border"
+    >
+      <ComponentDemo slug={component.slug} client:load />
+    </section>
+    <section class="mt-8 rounded-xl border p-5">
+      <p class="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wider">
+        Install component
+      </p>
+      <code class="font-mono text-sm">npx shadcn@latest add {component.slug}</code>
+    </section>
+  </main>
+</Base>
