@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#010102"/>
+  <rect x="1" y="1" width="1198" height="628" stroke="#23252a" stroke-width="2"/>
+  <rect x="88" y="82" width="64" height="64" rx="14" fill="#5e6ad2"/>
+  <path d="M104 128V100l16 13 16-13v28M104 128h32" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="173" y="125" fill="#f7f8f8" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="600" letter-spacing="-1">Mosly UI</text>
+  <text x="88" y="278" fill="#f7f8f8" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="600" letter-spacing="-3">Software should feel</text>
+  <text x="88" y="360" fill="#f7f8f8" font-family="Inter, Arial, sans-serif" font-size="72" font-weight="600" letter-spacing="-3">quietly precise.</text>
+  <text x="90" y="436" fill="#8a8f98" font-family="Inter, Arial, sans-serif" font-size="26">A restrained, dark-first theme for shadcn/ui.</text>
+  <rect x="88" y="508" width="473" height="54" rx="10" fill="#0f1011" stroke="#23252a"/>
+  <text x="111" y="543" fill="#d0d6e0" font-family="monospace" font-size="17">ui.mosly.dev/r/theme.json</text>
+  <circle cx="1081" cy="531" r="31" fill="#5e6ad2"/>
+</svg>

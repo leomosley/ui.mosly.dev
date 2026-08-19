@@ -13,7 +13,9 @@
     "typecheck": "turbo run typecheck",
     "clean": "turbo run clean",
     "format": "prettier --write .",
-    "theme": "bun run scripts/convert-palette.ts",
+    "format:check": "prettier --check .",
+    "theme": "bun run scripts/convert-palette.ts && prettier --write apps/web/src/styles/globals.css apps/web/public/r/theme.json docs/palette.oklch.json docs/theme-tokens.md docs/theme.css docs/theme.registry.json",
+    "theme:check": "bun run theme && git diff --exit-code -- apps/web/src/styles/globals.css apps/web/public/r/theme.json docs/palette.oklch.json docs/theme-tokens.md docs/theme.css docs/theme.registry.json",
     "registry:build": "cd apps/web && bunx shadcn build"
   },
   "devDependencies": {

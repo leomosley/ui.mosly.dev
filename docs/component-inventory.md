@@ -1,13 +1,12 @@
 # shadcn component inventory
 
-The showcase must render every shadcn/ui component. This is the source list
-(from https://ui.shadcn.com/docs/components). Grouped for the components-list
-sidebar and the search index. Each entry becomes a demo under
-`apps/web/src/components/demos/<name>.tsx` and a registry-agnostic showcase card.
+The showcase renders the complete stable shadcn/ui catalog available to the
+Radix/new-york registry at implementation time. It also includes documented
+compositions such as form, combobox, date-picker, and data-table.
 
-> Note: shadcn's canary/base line churns. Target the **stable** component set
-> below. If a component isn't in your installed shadcn version, skip it and note
-> it in the demo registry rather than blocking.
+> Canary-only chat primitives (attachment, bubble, marker, message,
+> message-scroller, questionnaire) are intentionally excluded because the stable
+> Radix registry does not publish them. They are not replaced with custom UI.
 
 ## Forms & inputs
 

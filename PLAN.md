@@ -169,7 +169,7 @@ export interface ComponentEntry {
 }
 ```
 
-Populate from `docs/component-inventory.md` (67 components). Each `slug` maps to a
+Populate from `docs/component-inventory.md` (59 stable components and documented compositions). Each `slug` maps to a
 demo component in `src/components/demos/<slug>.tsx`. Use a demo map:
 
 ```ts
