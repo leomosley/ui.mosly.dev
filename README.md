@@ -7,6 +7,8 @@ tokens and leaves every component, dependency, and API exactly where it was.
 
 The site lives at [ui.mosly.dev](https://ui.mosly.dev).
 
+![Mosly UI homepage](docs/home.png)
+
 ## Install
 
 Add the theme to any shadcn project:
