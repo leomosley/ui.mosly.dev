@@ -1,25 +1,105 @@
 ---
-import "@/styles/globals.css";
+import { ArrowRightIcon } from "lucide-react";
+
+import { DashboardShowcase } from "@/components/showcase/dashboard-showcase";
+import { InstallCommand } from "@/components/site/install-command";
+import Base from "@/layouts/Base.astro";
 ---
 
-<!doctype html>
-<html lang="en" class="dark">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="generator" content={Astro.generator} />
-    <title>ui.mosly.dev</title>
-  </head>
-  <body class="bg-background text-foreground min-h-svh">
-    <main class="mx-auto flex min-h-svh max-w-2xl flex-col justify-center gap-4 px-6">
-      <p class="text-muted-foreground text-sm uppercase tracking-widest">ui.mosly.dev</p>
-      <h1 class="text-4xl font-semibold tracking-tight">Skeleton ready.</h1>
-      <p class="text-muted-foreground text-lg">
-        The Mosly shadcn theme and project scaffold are in place. See <code class="font-mono"
-          >PLAN.md</code
-        > for the implementation plan.
-      </p>
-    </main>
-  </body>
-</html>
+<Base>
+  <main>
+    <section class="mx-auto max-w-7xl px-4 pb-20 pt-20 sm:px-6 sm:pb-28 sm:pt-32">
+      <div class="mx-auto flex max-w-4xl flex-col items-center text-center">
+        <div
+          class="border-border bg-card text-muted-foreground mb-7 flex items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[11px] uppercase tracking-wider"
+        >
+          <span class="bg-primary size-1.5 rounded-full"></span>
+          Theme for shadcn/ui
+        </div>
+        <h1
+          class="max-w-4xl text-5xl font-semibold leading-[0.98] tracking-[-0.055em] sm:text-7xl lg:text-[5.4rem]"
+        >
+          Software should feel<br class="hidden sm:block" /> quietly precise.
+        </h1>
+        <p class="text-muted-foreground mt-7 max-w-2xl text-lg leading-relaxed sm:text-xl">
+          A dark-first shadcn theme shaped by restrained surfaces, sharp typography, and one
+          deliberate accent.
+        </p>
+        <div class="mt-9 flex flex-col items-center gap-4 sm:flex-row">
+          <a
+            href="/components"
+            class="bg-primary text-primary-foreground inline-flex h-10 items-center gap-2 rounded-md px-4 text-sm font-medium"
+          >
+            Explore components <ArrowRightIcon className="size-4" />
+          </a>
+          <a
+            href="#install"
+            class="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            >Install the theme</a
+          >
+        </div>
+      </div>
+      <div class="mt-16 sm:mt-24">
+        <div class="border-border bg-card/50 rounded-2xl border p-1.5 sm:p-2.5">
+          <DashboardShowcase client:visible />
+        </div>
+      </div>
+    </section>
+
+    <section id="install" class="border-border border-y">
+      <div
+        class="mx-auto grid max-w-7xl gap-10 px-6 py-20 md:grid-cols-[1fr_1.2fr] md:items-center md:py-28"
+      >
+        <div>
+          <p class="text-primary mb-4 font-mono text-xs uppercase tracking-widest">One command</p>
+          <h2 class="text-3xl font-semibold tracking-[-0.04em] sm:text-5xl">
+            Your components.<br />A calmer visual language.
+          </h2>
+          <p class="text-muted-foreground mt-5 max-w-lg leading-relaxed">
+            The registry changes tokens only. It keeps every shadcn primitive, dependency, and API
+            exactly as it is.
+          </p>
+        </div>
+        <div class="flex flex-col gap-4">
+          <InstallCommand client:load />
+          <p class="text-muted-foreground text-xs">
+            Tailwind v4 · OKLCH · light and dark · Inter + Geist Mono
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-6 py-24 sm:py-32">
+      <div class="bg-border grid gap-px overflow-hidden rounded-xl border md:grid-cols-3">
+        <div class="bg-background p-7">
+          <span class="text-primary font-mono text-xs">01</span><h3
+            class="mt-8 text-xl font-medium tracking-tight"
+          >
+            Surface, not shadow
+          </h3><p class="text-muted-foreground mt-3 text-sm leading-relaxed">
+            A four-step surface ladder creates hierarchy without haze or decorative glow.
+          </p>
+        </div>
+        <div class="bg-background p-7">
+          <span class="text-primary font-mono text-xs">02</span><h3
+            class="mt-8 text-xl font-medium tracking-tight"
+          >
+            One accent
+          </h3><p class="text-muted-foreground mt-3 text-sm leading-relaxed">
+            Lavender-blue carries focus and action. Everything else stays out of the work’s way.
+          </p>
+        </div>
+        <div class="bg-background p-7">
+          <span class="text-primary font-mono text-xs">03</span><h3
+            class="mt-8 text-xl font-medium tracking-tight"
+          >
+            Complete by default
+          </h3><p class="text-muted-foreground mt-3 text-sm leading-relaxed">
+            Every stable shadcn primitive is covered, including charts, forms, navigation, and
+            overlays.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>
