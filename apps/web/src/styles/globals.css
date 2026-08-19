@@ -5,10 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* Exact Linear radius ladder (rounded.sm/md/lg/xl). Buttons, inputs and
+     badges use -md (8px); cards use -xl (12px) — matching Linear 1:1 rather
+     than shadcn's single derived --radius. */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -46,7 +49,7 @@
 }
 
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.139 0.0029 246.26);
   --card: oklch(0.9881 0 0);
@@ -82,7 +85,7 @@
 }
 
 .dark {
-  --background: oklch(0.0692 0.008 284.11);
+  --background: oklch(0.139 0.0029 246.26);
   --foreground: oklch(0.9784 0.0011 197.14);
   --card: oklch(0.1723 0.0026 247.98);
   --card-foreground: oklch(0.9784 0.0011 197.14);
