@@ -21,7 +21,12 @@ export function CommandPalette() {
 
   useEffect(() => {
     const listener = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+      const target = event.target as HTMLElement | null;
+      const isTyping = target?.matches("input, textarea, [contenteditable='true']");
+      const isCommandK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k";
+      const isSlash = event.key === "/" && !isTyping;
+
+      if (isCommandK || isSlash) {
         event.preventDefault();
         setOpen((value) => !value);
       }
@@ -39,6 +44,13 @@ export function CommandPalette() {
     await navigator.clipboard.writeText(installCommand);
     setOpen(false);
     toast.success("Install command copied");
+  }
+
+  function toggleTheme() {
+    const dark = !document.documentElement.classList.contains("dark");
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.setItem("theme", dark ? "dark" : "light");
+    setOpen(false);
   }
 
   return (
@@ -75,7 +87,7 @@ export function CommandPalette() {
                 <CheckIcon />
               </CommandShortcut>
             </CommandItem>
-            <CommandItem onSelect={() => document.documentElement.classList.toggle("dark")}>
+            <CommandItem onSelect={toggleTheme}>
               <MoonIcon />
               Toggle theme
             </CommandItem>
