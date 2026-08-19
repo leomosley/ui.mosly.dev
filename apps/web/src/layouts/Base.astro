@@ -1,0 +1,57 @@
+---
+import "@fontsource-variable/inter";
+import "@fontsource-variable/geist-mono";
+import "@/styles/globals.css";
+
+import { Toaster } from "@/components/ui/sonner";
+import SiteFooter from "@/components/site/site-footer.astro";
+import SiteHeader from "@/components/site/site-header.astro";
+import { buildSeo } from "@/lib/seo";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  hideChrome?: boolean;
+}
+
+const { title, description, image, hideChrome = false } = Astro.props;
+const seo = buildSeo({ title, description, image, path: Astro.url.pathname });
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#010102" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={seo.canonical} />
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ui.mosly.dev" />
+    <meta property="og:title" content={seo.title} />
+    <meta property="og:description" content={seo.description} />
+    <meta property="og:url" content={seo.canonical} />
+    <meta property="og:image" content={seo.image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={seo.title} />
+    <meta name="twitter:description" content={seo.description} />
+    <meta name="twitter:image" content={seo.image} />
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("theme");
+        const dark = stored ? stored === "dark" : true;
+        document.documentElement.classList.toggle("dark", dark);
+      })();
+    </script>
+  </head>
+  <body class="bg-background text-foreground min-h-svh antialiased">
+    {!hideChrome && <SiteHeader />}
+    <slot />
+    {!hideChrome && <SiteFooter />}
+    <Toaster client:load position="bottom-right" />
+  </body>
+</html>
