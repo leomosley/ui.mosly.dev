@@ -89,12 +89,14 @@ const projects = [
 function CreateProjectDialog() {
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <PlusIcon data-icon="inline-start" />
-          New project
-        </Button>
-      </DialogTrigger>
+      <DialogTrigger
+        render={
+          <Button size="sm">
+            <PlusIcon data-icon="inline-start" />
+            New project
+          </Button>
+        }
+      />
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a project</DialogTitle>
@@ -210,11 +212,13 @@ export function DashboardShowcase() {
               <BellIcon />
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <MoreHorizontalIcon />
-                </Button>
-              </DropdownMenuTrigger>
+              <DropdownMenuTrigger
+                render={
+                  <Button variant="ghost" size="icon">
+                    <MoreHorizontalIcon />
+                  </Button>
+                }
+              />
               <DropdownMenuContent align="end">
                 <DropdownMenuGroup>
                   <DropdownMenuItem>Import data</DropdownMenuItem>

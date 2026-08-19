@@ -1,12 +1,12 @@
 # shadcn component inventory
 
 The showcase renders the complete stable shadcn/ui catalog available to the
-Radix/new-york registry at implementation time. It also includes documented
+Base UI/new-york registry at implementation time. It also includes documented
 compositions such as form, combobox, date-picker, and data-table.
 
 > Canary-only chat primitives (attachment, bubble, marker, message,
 > message-scroller, questionnaire) are intentionally excluded because the stable
-> Radix registry does not publish them. They are not replaced with custom UI.
+> Base UI registry does not publish them. They are not replaced with custom UI.
 
 ## Forms & inputs
 

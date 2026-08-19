@@ -67,7 +67,7 @@ Everything below is DONE and committed as the `init` skeleton:
 | Runtime/PM  | Bun 1.2 (workspaces), Turborepo                              |
 | Framework   | Astro 7 (static output), React 19 islands                    |
 | Styling     | Tailwind CSS v4 (`@tailwindcss/vite`), OKLCH theme           |
-| Components  | shadcn/ui (new-york), Radix primitives, `lucide-react` icons |
+| Components  | shadcn/ui (new-york), Base UI primitives, `lucide-react` icons |
 | Fonts       | Inter (sans), Geist Mono (mono)                              |
 | Deploy      | Vercel via `@astrojs/vercel` (static)                        |
 | Search / ⌘K | `cmdk` (via shadcn `command`)                                |

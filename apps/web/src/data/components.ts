@@ -85,7 +85,7 @@ export const components: ComponentEntry[] = entries.map(
     group,
     description,
     keywords,
-    shadcnUrl: `https://ui.shadcn.com/docs/components/radix/${slug}`,
+    shadcnUrl: `https://ui.shadcn.com/docs/components/base/${slug}`,
   }),
 );
 

@@ -267,12 +267,14 @@ function CalendarDemo({ picker = false }: { picker?: boolean }) {
     );
   return (
     <Popover>
-      <PopoverTrigger asChild>
-        <Button variant="outline">
-          <CalendarIcon data-icon="inline-start" />
-          {date?.toLocaleDateString() ?? "Pick a date"}
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger
+        render={
+          <Button variant="outline">
+            <CalendarIcon data-icon="inline-start" />
+            {date?.toLocaleDateString() ?? "Pick a date"}
+          </Button>
+        }
+      />
       <PopoverContent className="w-auto p-0">
         <Calendar mode="single" selected={date} onSelect={setDate} />
       </PopoverContent>
@@ -285,12 +287,14 @@ function ComboboxDemo() {
   const [value, setValue] = useState("Select framework");
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" className="w-52 justify-between">
-          {value}
-          <ChevronDownIcon />
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger
+        render={
+          <Button variant="outline" className="w-52 justify-between">
+            {value}
+            <ChevronDownIcon />
+          </Button>
+        }
+      />
       <PopoverContent className="w-52 p-0">
         <Command>
           <CommandInput placeholder="Search framework..." />
@@ -355,9 +359,7 @@ function OverlayDemo({ slug }: { slug: string }) {
   if (slug === "dialog")
     return (
       <Dialog>
-        <DialogTrigger asChild>
-          <Button>Open dialog</Button>
-        </DialogTrigger>
+        <DialogTrigger render={<Button>Open dialog</Button>} />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Edit profile</DialogTitle>
@@ -378,9 +380,7 @@ function OverlayDemo({ slug }: { slug: string }) {
   if (slug === "alert-dialog")
     return (
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant="destructive">Delete project</Button>
-        </AlertDialogTrigger>
+        <AlertDialogTrigger render={<Button variant="destructive">Delete project</Button>} />
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
@@ -396,9 +396,7 @@ function OverlayDemo({ slug }: { slug: string }) {
   if (slug === "sheet")
     return (
       <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline">Open sheet</Button>
-        </SheetTrigger>
+        <SheetTrigger render={<Button variant="outline">Open sheet</Button>} />
         <SheetContent>
           <SheetHeader>
             <SheetTitle>Project settings</SheetTitle>
@@ -419,9 +417,7 @@ function OverlayDemo({ slug }: { slug: string }) {
   if (slug === "drawer")
     return (
       <Drawer>
-        <DrawerTrigger asChild>
-          <Button variant="outline">Open drawer</Button>
-        </DrawerTrigger>
+        <DrawerTrigger render={<Button variant="outline">Open drawer</Button>} />
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Move project</DrawerTitle>
@@ -599,7 +595,7 @@ export function ComponentDemo({ slug }: { slug: string }) {
       break;
     case "toggle-group":
       demo = (
-        <ToggleGroup type="multiple" variant="outline">
+        <ToggleGroup multiple variant="outline">
           <ToggleGroupItem value="bold">
             <BoldIcon />
           </ToggleGroupItem>
@@ -1004,9 +1000,7 @@ export function ComponentDemo({ slug }: { slug: string }) {
     case "popover":
       demo = (
         <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline">Open popover</Button>
-          </PopoverTrigger>
+          <PopoverTrigger render={<Button variant="outline">Open popover</Button>} />
           <PopoverContent>
             <PopoverHeader>
               <PopoverTitle>Dimensions</PopoverTitle>
@@ -1025,9 +1019,7 @@ export function ComponentDemo({ slug }: { slug: string }) {
     case "hover-card":
       demo = (
         <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button variant="link">@leomosley</Button>
-          </HoverCardTrigger>
+          <HoverCardTrigger render={<Button variant="link">@leomosley</Button>} />
           <HoverCardContent>
             <div className="flex gap-3">
               <Avatar>
@@ -1046,11 +1038,13 @@ export function ComponentDemo({ slug }: { slug: string }) {
       demo = (
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger asChild>
-              <Button variant="outline" size="icon">
-                <BellIcon />
-              </Button>
-            </TooltipTrigger>
+            <TooltipTrigger
+              render={
+                <Button variant="outline" size="icon">
+                  <BellIcon />
+                </Button>
+              }
+            />
             <TooltipContent>Notifications</TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -1059,9 +1053,7 @@ export function ComponentDemo({ slug }: { slug: string }) {
     case "dropdown-menu":
       demo = (
         <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">Open menu</Button>
-          </DropdownMenuTrigger>
+          <DropdownMenuTrigger render={<Button variant="outline">Open menu</Button>} />
           <DropdownMenuContent>
             <DropdownMenuGroup>
               <DropdownMenuItem>
@@ -1133,7 +1125,7 @@ export function ComponentDemo({ slug }: { slug: string }) {
       break;
     case "accordion":
       demo = (
-        <Accordion type="single" collapsible className="w-full max-w-md">
+        <Accordion className="w-full max-w-md">
           <AccordionItem value="one">
             <AccordionTrigger>Is this a component library?</AccordionTrigger>
             <AccordionContent>
@@ -1152,11 +1144,13 @@ export function ComponentDemo({ slug }: { slug: string }) {
         <Collapsible className="w-full max-w-sm">
           <div className="flex items-center justify-between">
             <p className="font-medium">3 design tokens</p>
-            <CollapsibleTrigger asChild>
-              <Button variant="ghost" size="sm">
-                Toggle
-              </Button>
-            </CollapsibleTrigger>
+            <CollapsibleTrigger
+              render={
+                <Button variant="ghost" size="sm">
+                  Toggle
+                </Button>
+              }
+            />
           </div>
           <CollapsibleContent className="mt-3 flex flex-col gap-2">
             {["--background", "--primary", "--border"].map((token) => (
