@@ -1,0 +1,312 @@
+/**
+ * convert-palette.ts
+ *
+ * Converts the ui.mosly.dev design palette (sourced from the `ui-design` skill,
+ * Linear's marketing/product system) from hex to OKLCH — the color space shadcn
+ * uses in its theme CSS. Emits:
+ *   - docs/theme-tokens.md   (human-readable table: hex -> oklch, per mode)
+ *   - docs/palette.oklch.json (machine-readable, keyed by token name + mode)
+ *
+ * No dependencies. Pure sRGB -> linear -> OKLab -> OKLCH per Björn Ottosson.
+ *
+ * Run:  bun run scripts/convert-palette.ts
+ */
+
+import { writeFileSync, mkdirSync } from "node:fs";
+import { resolve, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
+// ---------------------------------------------------------------------------
+// Palette source — copied verbatim from the `ui-design` skill token spec.
+// ---------------------------------------------------------------------------
+
+type Palette = Record<string, string>;
+
+const dark: Palette = {
+  primary: "#5e6ad2",
+  "on-primary": "#ffffff",
+  "primary-hover": "#828fff",
+  "primary-focus": "#5e69d1",
+  ink: "#f7f8f8",
+  "ink-muted": "#d0d6e0",
+  "ink-subtle": "#8a8f98",
+  "ink-tertiary": "#62666d",
+  canvas: "#010102",
+  "surface-1": "#0f1011",
+  "surface-2": "#141516",
+  "surface-3": "#18191a",
+  "surface-4": "#191a1b",
+  hairline: "#23252a",
+  "hairline-strong": "#34343a",
+  "hairline-tertiary": "#3e3e44",
+  "inverse-canvas": "#ffffff",
+  "inverse-surface-1": "#f5f6f6",
+  "inverse-surface-2": "#f6f7f7",
+  "inverse-ink": "#000000",
+  "brand-secure": "#7a7fad",
+  "semantic-success": "#27a644",
+  "semantic-overlay": "#000000",
+};
+
+const light: Palette = {
+  primary: "#5e6ad2",
+  "on-primary": "#ffffff",
+  "primary-hover": "#4c58c0",
+  "primary-focus": "#5e69d1",
+  ink: "#08090a",
+  "ink-muted": "#3c4149",
+  "ink-subtle": "#6b6f76",
+  "ink-tertiary": "#8a8f98",
+  canvas: "#ffffff",
+  "surface-1": "#fbfbfb",
+  "surface-2": "#f4f5f8",
+  "surface-3": "#eeeff1",
+  "surface-4": "#e7e8ea",
+  hairline: "#e9eaeb",
+  "hairline-strong": "#dcdddf",
+  "hairline-tertiary": "#cccdd0",
+  "inverse-canvas": "#08090a",
+  "inverse-surface-1": "#141516",
+  "inverse-surface-2": "#191a1b",
+  "inverse-ink": "#ffffff",
+  "brand-secure": "#5c6488",
+  "semantic-success": "#1a7f37",
+  "semantic-overlay": "#000000",
+};
+
+// ---------------------------------------------------------------------------
+// Color math: hex -> sRGB -> linear -> OKLab -> OKLCH
+// ---------------------------------------------------------------------------
+
+function hexToRgb(hex: string): [number, number, number] {
+  const h = hex.replace("#", "");
+  const full =
+    h.length === 3
+      ? h
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : h;
+  const int = parseInt(full, 16);
+  return [(int >> 16) & 255, (int >> 8) & 255, int & 255];
+}
+
+function srgbToLinear(c: number): number {
+  const cs = c / 255;
+  return cs <= 0.04045 ? cs / 12.92 : Math.pow((cs + 0.055) / 1.055, 2.4);
+}
+
+function rgbToOklch(hex: string): { l: number; c: number; h: number } {
+  const [r8, g8, b8] = hexToRgb(hex);
+  const r = srgbToLinear(r8);
+  const g = srgbToLinear(g8);
+  const b = srgbToLinear(b8);
+
+  const l_ = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m_ = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s_ = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+
+  const L = 0.2104542553 * l_ + 0.793617785 * m_ - 0.0040720468 * s_;
+  const a = 1.9779984951 * l_ - 2.428592205 * m_ + 0.4505937099 * s_;
+  const bb = 0.0259040371 * l_ + 0.7827717662 * m_ - 0.808675766 * s_;
+
+  const C = Math.sqrt(a * a + bb * bb);
+  let H = (Math.atan2(bb, a) * 180) / Math.PI;
+  if (H < 0) H += 360;
+
+  return { l: L, c: C, h: H };
+}
+
+function round(n: number, dp: number): number {
+  return Math.round(n * 10 ** dp) / 10 ** dp;
+}
+
+/** Format as the space-separated OKLCH shadcn writes, e.g. `oklch(0.62 0.19 264.5)`. */
+function oklchString(hex: string): string {
+  const { l, c, h } = rgbToOklch(hex);
+  const L = round(l, 4);
+  const C = round(c, 4);
+  // Achromatic colors: drop a meaningless hue.
+  if (C < 0.0005) return `oklch(${L} 0 0)`;
+  return `oklch(${L} ${C} ${round(h, 2)})`;
+}
+
+// ---------------------------------------------------------------------------
+// Emit
+// ---------------------------------------------------------------------------
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const docsDir = resolve(__dirname, "../docs");
+mkdirSync(docsDir, { recursive: true });
+
+const json: Record<string, { light: string; dark: string; lightHex: string; darkHex: string }> = {};
+for (const key of Object.keys(dark)) {
+  json[key] = {
+    lightHex: light[key]!,
+    darkHex: dark[key]!,
+    light: oklchString(light[key]!),
+    dark: oklchString(dark[key]!),
+  };
+}
+writeFileSync(resolve(docsDir, "palette.oklch.json"), JSON.stringify(json, null, 2) + "\n");
+
+let md = `# Theme tokens — hex → OKLCH\n\n`;
+md += `> Generated by \`scripts/convert-palette.ts\`. Do not edit by hand.\n`;
+md += `> Source palette: the \`ui-design\` skill (Linear-inspired system).\n\n`;
+md += `| Token | Light hex | Light OKLCH | Dark hex | Dark OKLCH |\n`;
+md += `| ----- | --------- | ----------- | -------- | ---------- |\n`;
+for (const key of Object.keys(dark)) {
+  const j = json[key]!;
+  md += `| \`${key}\` | \`${j.lightHex}\` | \`${j.light}\` | \`${j.darkHex}\` | \`${j.dark}\` |\n`;
+}
+md += `\n`;
+writeFileSync(resolve(docsDir, "theme-tokens.md"), md);
+
+// ---------------------------------------------------------------------------
+// shadcn theme mapping — map the design palette onto shadcn/ui CSS variables.
+// Each entry references a palette token by name; resolved per-mode to OKLCH.
+// This is the single source of truth for apps/web/src/styles/globals.css and
+// the registry theme (public/r/mosly.json). Keep them in sync via this script.
+// ---------------------------------------------------------------------------
+
+/** Map of shadcn var -> palette token key. Resolved separately for light/dark. */
+const shadcnMap: Record<string, keyof typeof dark> = {
+  background: "canvas",
+  foreground: "ink",
+  card: "surface-1",
+  "card-foreground": "ink",
+  popover: "surface-2",
+  "popover-foreground": "ink",
+  primary: "primary",
+  "primary-foreground": "on-primary",
+  secondary: "surface-2",
+  "secondary-foreground": "ink",
+  muted: "surface-3",
+  "muted-foreground": "ink-subtle",
+  accent: "surface-3",
+  "accent-foreground": "ink",
+  border: "hairline",
+  input: "hairline-strong",
+  ring: "primary",
+  sidebar: "surface-1",
+  "sidebar-foreground": "ink-muted",
+  "sidebar-primary": "primary",
+  "sidebar-primary-foreground": "on-primary",
+  "sidebar-accent": "surface-3",
+  "sidebar-accent-foreground": "ink",
+  "sidebar-border": "hairline",
+  "sidebar-ring": "primary",
+};
+
+// Chart palette: primary hue + tints + the one semantic color. Hand-picked hex
+// so the charts read as a cohesive lavender ramp with a success green anchor.
+const chartsDark = ["#5e6ad2", "#828fff", "#7a7fad", "#27a644", "#d0d6e0"];
+const chartsLight = ["#5e6ad2", "#4c58c0", "#5c6488", "#1a7f37", "#3c4149"];
+
+// destructive: not in the Linear palette (avoids red on canvas). Pull a
+// restrained red that sits at similar lightness to primary in each mode.
+const destructiveDark = "#e5484d";
+const destructiveLight = "#dc3d43";
+
+function buildVars(mode: "light" | "dark"): Record<string, string> {
+  const src = mode === "dark" ? dark : light;
+  const vars: Record<string, string> = {};
+  for (const [cssVar, token] of Object.entries(shadcnMap)) {
+    vars[cssVar] = oklchString(src[token]!);
+  }
+  vars["destructive"] = oklchString(mode === "dark" ? destructiveDark : destructiveLight);
+  vars["destructive-foreground"] = oklchString("#ffffff");
+  const charts = mode === "dark" ? chartsDark : chartsLight;
+  charts.forEach((hex, i) => (vars[`chart-${i + 1}`] = oklchString(hex)));
+  return vars;
+}
+
+const radius = "0.75rem"; // rounded.lg = 12px, the card default in ui-design.
+
+function emitBlock(selector: string, vars: Record<string, string>, extra: string[] = []): string {
+  let s = `${selector} {\n`;
+  for (const e of extra) s += `  ${e}\n`;
+  for (const [k, v] of Object.entries(vars)) s += `  --${k}: ${v};\n`;
+  s += `}\n`;
+  return s;
+}
+
+const lightVars = buildVars("light");
+const darkVars = buildVars("dark");
+
+let css = `/* ui.mosly.dev theme — generated by scripts/convert-palette.ts. Do not edit by hand. */\n\n`;
+css += emitBlock(":root", lightVars, [`--radius: ${radius};`]);
+css += `\n`;
+css += emitBlock(".dark", darkVars);
+writeFileSync(resolve(docsDir, "theme.css"), css);
+
+// Registry theme JSON (shadcn `registry:theme` item) — importable via
+// `npx shadcn add https://ui.mosly.dev/r/mosly.json`.
+const registry = {
+  $schema: "https://ui.shadcn.com/schema/registry-item.json",
+  name: "mosly",
+  type: "registry:theme",
+  title: "Mosly",
+  description: "Leo Mosley's Linear-inspired shadcn theme (OKLCH).",
+  cssVars: {
+    theme: { radius },
+    light: lightVars,
+    dark: darkVars,
+  },
+};
+writeFileSync(resolve(docsDir, "mosly.registry.json"), JSON.stringify(registry, null, 2) + "\n");
+
+// --- App artifacts: written straight into the web app so they stay in sync. ---
+const appDir = resolve(__dirname, "../apps/web");
+
+// public/r/mosly.json — the importable registry theme served at
+// https://ui.mosly.dev/r/mosly.json
+const registryDir = resolve(appDir, "public/r");
+mkdirSync(registryDir, { recursive: true });
+writeFileSync(resolve(registryDir, "mosly.json"), JSON.stringify(registry, null, 2) + "\n");
+
+// src/styles/globals.css — the live Tailwind v4 + shadcn theme entrypoint.
+const stylesDir = resolve(appDir, "src/styles");
+mkdirSync(stylesDir, { recursive: true });
+
+const themeInline = Object.keys(lightVars)
+  .map((k) => `  --color-${k}: var(--${k});`)
+  .join("\n");
+
+const globals = `/* ui.mosly.dev — Tailwind v4 + shadcn theme. Generated by scripts/convert-palette.ts. */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+${themeInline}
+  --font-sans:
+    "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-mono:
+    "Geist Mono", ui-monospace, "SF Mono", "Cascadia Code", monospace;
+}
+
+${emitBlock(":root", lightVars, [`--radius: ${radius};`])}
+${emitBlock(".dark", darkVars)}
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01";
+    letter-spacing: -0.011em;
+  }
+}
+`;
+writeFileSync(resolve(stylesDir, "globals.css"), globals);
+
+console.log(
+  `Wrote docs/{palette.oklch.json, theme-tokens.md, theme.css, mosly.registry.json},\n` +
+    `      apps/web/public/r/mosly.json, apps/web/src/styles/globals.css`,
+);
