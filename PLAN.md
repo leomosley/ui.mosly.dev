@@ -20,7 +20,7 @@ re-deriving decisions. Read it fully before starting.
      demonstrates the theme in context, à la a product screenshot but live.
    - **Components section** — a searchable list of _every_ shadcn component, each
      with its own demo view, mirroring ui.shadcn.com's docs/components experience.
-3. **High polish**: ⌘K command palette, light/dark toggle (dark default), Open
+3. **High polish**: ⌘K command palette, light/dark toggle (light default), Open
    Graph configured for the `ui.mosly.dev` domain, SEO, fast static output.
 4. **Deploy target: Vercel** (static + `@astrojs/vercel`). No infra code.
 
@@ -115,7 +115,7 @@ docs/
 
 ## 5. Design system (summary — full detail in `skills/ui-design/SKILL.md`)
 
-- **Dark-first.** `<html class="dark">` is the default. Light is a toggle.
+- **Light by default.** Add `.dark` only after the user explicitly selects dark mode.
 - **One accent**: lavender-blue `--primary` = `oklch(0.5674 0.1585 275.21)`.
 - **Surface ladder** carries hierarchy (canvas→surface-1..4), **hairline borders**
   (1px), **no shadows/glows**, no second chromatic hue.
@@ -230,9 +230,9 @@ theme. Keep chrome minimal; let the UI carry the page.
 
 ## 10. Dark / light mode
 
-- **Dark is default.** Put `class="dark"` on `<html>` in `Base.astro`.
+- **Light is default.** Leave `<html>` unclassed in `Base.astro`.
 - Add a **no-flash inline script** in `<head>` that reads `localStorage.theme`
-  (falling back to system, defaulting to dark) and sets/removes `.dark` before
+  (defaulting to light) and sets/removes `.dark` before
   paint.
 - A `ThemeToggle` React island toggles `.dark` on `documentElement` and persists
   to `localStorage`. Use lucide `Sun`/`Moon`. Place it in the top nav.
@@ -312,7 +312,7 @@ theme. Keep chrome minimal; let the UI carry the page.
 
 - [ ] Every component in `docs/component-inventory.md` has a demo and a page.
 - [ ] `/components` search filters correctly; ⌘K opens and navigates.
-- [ ] Theme toggle works with no flash on reload; dark is default.
+- [ ] Theme toggle works with no flash on reload; light is default.
 - [ ] Home page renders a convincing composed UI in both themes.
 - [ ] OG tags present + absolute; link preview renders on Slack/Twitter/iMessage.
 - [ ] `sitemap` + `robots.txt` correct for ui.mosly.dev.

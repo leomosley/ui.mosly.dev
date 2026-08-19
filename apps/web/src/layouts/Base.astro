@@ -20,12 +20,13 @@ const seo = buildSeo({ title, description, image, path: Astro.url.pathname });
 ---
 
 <!doctype html>
-<html lang="en" class="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#010102" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#010102" media="(prefers-color-scheme: dark)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={seo.canonical} />
     <title>{seo.title}</title>
@@ -43,7 +44,7 @@ const seo = buildSeo({ title, description, image, path: Astro.url.pathname });
     <script is:inline>
       (() => {
         const stored = localStorage.getItem("theme");
-        const dark = stored ? stored === "dark" : true;
+        const dark = stored === "dark";
         document.documentElement.classList.toggle("dark", dark);
       })();
     </script>

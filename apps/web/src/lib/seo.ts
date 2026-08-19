@@ -9,7 +9,7 @@ interface SeoInput {
 
 export function buildSeo({
   title = "Mosly UI — A restrained shadcn theme",
-  description = "A dark-first, Linear-inspired shadcn/ui theme and complete component showcase.",
+  description = "A restrained, Linear-inspired shadcn/ui theme and complete component showcase.",
   path = "/",
   image = "/og/default.png",
 }: SeoInput = {}) {

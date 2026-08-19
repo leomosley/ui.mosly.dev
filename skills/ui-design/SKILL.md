@@ -12,7 +12,7 @@ description: >-
 
 ## What this is
 
-A dark-first, software-craft design language: a near-black canvas, a single
+A software-craft design language with light as the site default and a deep dark mode: a restrained canvas, a single
 lavender-blue accent (`#5e6ad2`), a four-step surface ladder, hairline borders,
 and tight negative-tracked display type. Restraint over decoration. It ships as a
 shadcn `registry:theme` so any shadcn project can adopt it in one command.
@@ -30,8 +30,8 @@ project's global stylesheet. Requirements in the target project:
 
 - shadcn/ui initialised (`npx shadcn@latest init`) with **CSS variables** enabled.
 - **Tailwind v4** (the theme uses OKLCH values and the `@theme inline` mapping).
-- A `.dark` class strategy for dark mode (default shadcn setup). Dark is the
-  intended default — add `class="dark"` on `<html>`.
+- A `.dark` class strategy for dark mode (default shadcn setup). Light is the
+  intended default; add `.dark` only when the user selects dark mode.
 
 Fonts are not installed by the theme. Add **Inter** (sans) and **Geist Mono**
 (mono) and wire them to `--font-sans` / `--font-mono`.
@@ -72,7 +72,7 @@ the theme, `globals.css`, and the published registry file.
 
 ## Do / Don't
 
-- DO default to dark. DO use one accent. DO lean on hairlines + surface steps.
+- DO default to light. DO use one accent. DO lean on hairlines + surface steps.
 - DO keep type tight and quiet; large headings, calm body.
 - DON'T add a second accent color or saturated status colors beyond success.
 - DON'T use shadows/glows for elevation. DON'T round everything into pills.
