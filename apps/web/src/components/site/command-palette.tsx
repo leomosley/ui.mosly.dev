@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -65,47 +66,49 @@ export function CommandPalette() {
         <span className="border-border bg-muted ml-4 rounded border px-1.5 font-mono">⌘ K</span>
       </button>
       <CommandDialog open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search components and actions..." />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Navigation">
-            <CommandItem onSelect={() => navigate("/")}>
-              <HomeIcon />
-              Home
-            </CommandItem>
-            <CommandItem onSelect={() => navigate("/components")}>
-              <ComponentIcon />
-              Components
-            </CommandItem>
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Actions">
-            <CommandItem onSelect={copyInstall}>
-              <CopyIcon />
-              Copy install command
-              <CommandShortcut>
-                <CheckIcon />
-              </CommandShortcut>
-            </CommandItem>
-            <CommandItem onSelect={toggleTheme}>
-              <MoonIcon />
-              Toggle theme
-            </CommandItem>
-          </CommandGroup>
-          <CommandSeparator />
-          <CommandGroup heading="Components">
-            {components.map((component) => (
-              <CommandItem
-                key={component.slug}
-                value={`${component.name} ${component.keywords.join(" ")}`}
-                onSelect={() => navigate(`/components/${component.slug}`)}
-              >
-                <ComponentIcon />
-                {component.name}
+        <Command>
+          <CommandInput placeholder="Search components and actions..." />
+          <CommandList>
+            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandGroup heading="Navigation">
+              <CommandItem onSelect={() => navigate("/")}>
+                <HomeIcon />
+                Home
               </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
+              <CommandItem onSelect={() => navigate("/components")}>
+                <ComponentIcon />
+                Components
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Actions">
+              <CommandItem onSelect={copyInstall}>
+                <CopyIcon />
+                Copy install command
+                <CommandShortcut>
+                  <CheckIcon />
+                </CommandShortcut>
+              </CommandItem>
+              <CommandItem onSelect={toggleTheme}>
+                <MoonIcon />
+                Toggle theme
+              </CommandItem>
+            </CommandGroup>
+            <CommandSeparator />
+            <CommandGroup heading="Components">
+              {components.map((component) => (
+                <CommandItem
+                  key={component.slug}
+                  value={`${component.name} ${component.keywords.join(" ")}`}
+                  onSelect={() => navigate(`/components/${component.slug}`)}
+                >
+                  <ComponentIcon />
+                  {component.name}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
       </CommandDialog>
     </>
   );
